@@ -18,3 +18,5 @@ labels = kmeans.labels_
 
 assigned_tables = {user: labels[index] + 1 for index, user in enumerate(user_names)}
 print(assigned_tables)
+nb_of_ppl_per_table = {f"table_{table}": list(assigned_tables.values()).count(table) for table in range(1, NB_TABLES + 1)}
+print(nb_of_ppl_per_table)
