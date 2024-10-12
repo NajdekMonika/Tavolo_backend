@@ -1,49 +1,49 @@
 from django.db import models
-
-# Create your models here.
-
-from django.db import models
+from .utils import generate_random_key
+import uuid
 
 
 class User(models.Model):
-    EXPLORER = 'Explorer'
-    TOPIC_FOCUSED = 'Topic focused'
-    RESERVED = 'Reserved'
-    FLAG_CHOICES = [
-        (EXPLORER, 'Explorer'),
-        (TOPIC_FOCUSED, 'Topic focused'),
-        (RESERVED, 'Reserved'),
-    ]
-
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    event = models.ForeignKey('Event', to_field='event_key', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    interests = models.TextField()
+    surname = models.CharField(max_length=100)
+    description = models.TextField()
+    interests = models.JSONField()
     organization = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
-    flag = models.CharField(max_length=20, choices=FLAG_CHOICES, default=EXPLORER)
+    flag = models.CharField(max_length=20)
     availability = models.BooleanField(default=True)
+    table = models.ForeignKey('Table', on_delete=models.SET_NULL, null=True)
+
 
     def __str__(self):
         return self.name
 
 
 class Event(models.Model):
+    event_key = models.CharField(max_length=10, unique=True)
+    admin_key = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=100)
     description = models.TextField()
     logo = models.ImageField(upload_to='event_logos/')
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    number_of_tables = models.PositiveIntegerField()
-    event_key = models.CharField(max_length=50, unique=True)
 
+    def save(self, *args, **kwargs):
+        self.event_key = generate_random_key(4)
+        self.admin_key = generate_random_key(8)
+        super().save(*args, **kwargs)
+        
     def __str__(self):
         return self.name
 
 
 class Table(models.Model):
-    number = models.PositiveIntegerField()
+    table_number = models.PositiveIntegerField()
+    event = models.ForeignKey(Event, to_field='event_key', on_delete=models.CASCADE)
     max_users = models.PositiveIntegerField()
-    users = models.ManyToManyField(User)
-
+        
     def __str__(self):
         return f"Table {self.number}"
 
