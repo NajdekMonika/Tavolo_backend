@@ -1,9 +1,9 @@
 import numpy as np
 from sklearn.cluster import KMeans
 
-NB_TABLES = 5
-user_names = [f'user{idx}' for idx in range(20)]
-interests = [f'interest{idx}' for idx in range(5)]
+NB_TABLES = 10
+user_names = [f'user{idx}' for idx in range(100)]
+interests = [f'interest{idx}' for idx in range(0, 5)]
 
 Users = {user: {interest: np.random.randint(1, 5) for interest in interests} for user in user_names}
 print(Users)
