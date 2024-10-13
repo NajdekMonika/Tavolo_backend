@@ -10,11 +10,15 @@ class UserSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ('name', 'description', 'logo', 'start_time', 'end_time')
+        fields = ('name', 'description', 'start_time', 'end_time')
 
 
 class TableSerializer(serializers.ModelSerializer):
     class Meta:
         model = Table
         fields = '__all__'
-        
+
+class TableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Table
+        fields = 'table_number', 'event', 'max_users'

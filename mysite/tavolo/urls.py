@@ -3,13 +3,10 @@ from .views import *
 
 urlpatterns = [
     path('', index, name="index"),
-    # Event
-    path('events/<str:event_key>/', EventView.as_view()),
-
-    # Create user
-    path('users/create/', UserCreateView.as_view(), name='user-create'),
-    # Retrieve user by UUID
-    path('users/<uuid:uuid>/', UserRetrieveView.as_view(), name='user-retrieve'),
-    # Retrieve all users
-    path('users/', UserListView.as_view(), name='user-list'),
+    path('event/', EventView.as_view()),
+    path('user/', UserView.as_view()),
+    path('table/', TableView.as_view()),
+    path('allUsers/', AllUsersView.as_view()),
+    path('allTables/', AllTablesView.as_view()),
+    path('addInterests/', AddIntrestsView.as_view()),
 ]

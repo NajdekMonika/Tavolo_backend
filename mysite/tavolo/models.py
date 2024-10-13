@@ -26,7 +26,6 @@ class Event(models.Model):
     admin_key = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=100)
     description = models.TextField()
-    logo = models.ImageField(upload_to='event_logos/')
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
 
@@ -41,15 +40,9 @@ class Event(models.Model):
 
 class Table(models.Model):
     table_number = models.PositiveIntegerField()
-    event = models.ForeignKey(Event, to_field='event_key', on_delete=models.CASCADE)
     max_users = models.PositiveIntegerField()
+    event_key = models.ForeignKey(Event, to_field='event_key', on_delete=models.CASCADE)
         
     def __str__(self):
         return f"Table {self.number}"
 
-
-class Topic(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
